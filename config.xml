@@ -1,0 +1,47 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>NAME</name>
+          <description>Nom de l&apos;infra </description>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SUBNET_ID</name>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>access_key</name>
+          <defaultValue>{AQAAABAAAAAQGqhH5KbjdQnRKSURxZ1ZtRPDUzQ8eq8JBLm1jPwtvEc=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>secret_key</name>
+          <defaultValue>{AQAAABAAAAAQ6qhElCQbRmPOJAiCnfkQKeJ3dsWWU+6CaFWsTzmJ/to=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>sudo cp -r /home/Template /home/Infrastructure/$NAME
+sudo sed -i &quot;s/TO_CHANGE/$NAME/g&quot; /home/Infrastructure/$NAME/modules/SimpleLB/variables.tf
+sudo sed -i &quot;s/XXX/$SUBNET_ID/g&quot; /home/Infrastructure/$NAME/modules/SimpleLB/variables.tf
+cd /home/Infrastructure/$NAME &amp;&amp; sudo terraform init &amp;&amp; sudo terraform apply --auto-approve -var=access_key=$access_key -var=secret_key=$secret_key</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
